@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "json-server server.json -w -d 750 -p 3333"
   },
   "dependencies": {
     "@types/node": "20.4.2",
@@ -20,5 +21,8 @@
     "react-dom": "18.2.0",
     "sass": "^1.63.6",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.3"
   }
 }
