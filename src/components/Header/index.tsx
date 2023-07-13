@@ -9,7 +9,7 @@ export const Header = () => {
 
   return (
     <header className={styles.container}>
-      <img src="/logo.svg" alt="Podcastr" />
+      <img src='/logo.svg' alt='Podcastr' />
       <p>Listen to the best available here</p>
       <span>{currentDate}</span>
     </header>
