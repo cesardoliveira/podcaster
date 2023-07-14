@@ -1,12 +1,16 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ParsedUrlQuery } from 'querystring'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import enGB from 'date-fns/locale/en-GB'
 import { api } from '../../services/api'
 import { convertDurationToTimeString } from '../../utils/converter'
 import styles from './episode.module.scss'
+interface IParams extends ParsedUrlQuery {
+  slug: string
+}
 
 type Episode = {
   id: string
@@ -53,14 +57,30 @@ const Episode = ({ episode }: EpisodeProps) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get('/episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc'
+    }
+  })
+
+  const paths = data.map((episode: Episode) => {
+    return {
+      params: {
+        slug: episode.id
+      }
+    }
+  })
+
   return {
-    paths: [],
+    paths,
     fallback: 'blocking'
   }
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { slug } = context.params
+  const { slug } = context.params as IParams
 
   const { data } = await api.get(`/episodes/${slug}`)
 
