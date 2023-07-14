@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import enGB from 'date-fns/locale/en-GB'
@@ -20,7 +21,6 @@ type Episode = {
   thumbnail: string
   published_at: string
   publishedAt: string
-  description: string
   duration: string
   url: string
   file: File
@@ -44,7 +44,9 @@ const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
                 <Image width={192} height={192} src={episode.thumbnail} alt={episode.title} style={{objectFit: 'cover'}} />
 
                 <div className={styles.episodeDetails}>
-                  <a href=''>{episode.title}</a>
+                  <Link legacyBehavior href={`/episode/${episode.id}`}>
+                    <a>{episode.title}</a>
+                  </Link>
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
                   <span>{episode.duration}</span>
@@ -81,7 +83,9 @@ const Home = ({ latestEpisodes, allEpisodes }: HomeProps) => {
                       <Image width={120} height={120} src={episode.thumbnail} alt={episode.title} style={{objectFit: 'cover'}} />
                     </td>
                     <td>
-                      <a href=''>{episode.title}</a>
+                      <Link legacyBehavior href={`/episode/${episode.id}`}>
+                        <a>{episode.title}</a>
+                      </Link>
                     </td>
                     <td>{episode.members}</td>
                     <td style={{ width: 100 }}>{episode.publishedAt}</td>
@@ -118,7 +122,6 @@ export const getStaticProps: GetStaticProps = async () => {
       members: episode.members,
       publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: enGB }),
       thumbnail: episode.thumbnail,
-      description: episode.description,
       duration: convertDurationToTimeString(episode.file.duration),
       url: episode.file.url
     }
