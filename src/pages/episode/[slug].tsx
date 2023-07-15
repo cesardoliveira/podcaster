@@ -7,6 +7,7 @@ import parseISO from 'date-fns/parseISO'
 import enGB from 'date-fns/locale/en-GB'
 import { api } from '../../services/api'
 import { convertDurationToTimeString } from '../../utils/converter'
+import { usePlayer } from '../../contexts/player-context'
 import styles from './episode.module.scss'
 interface IParams extends ParsedUrlQuery {
   slug: string
@@ -30,7 +31,7 @@ type EpisodeProps = {
 }
 
 const Episode = ({ episode }: EpisodeProps) => {
-  
+  const { play } = usePlayer()
 
   return (
     <div className={styles.episode}>
@@ -41,7 +42,7 @@ const Episode = ({ episode }: EpisodeProps) => {
           </button>
         </Link>
         <Image width={660} height={160} src={episode.thumbnail} style={{objectFit: 'cover'}} />
-        <button className={styles.playButton} type='button'>
+        <button className={styles.playButton} type='button' onClick={() => play(episode)}>
           <img src='/play.svg' alt='Play episode' />
         </button>
      </div>  
